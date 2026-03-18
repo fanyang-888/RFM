@@ -50,6 +50,23 @@ As a result, high-value and high-risk customers may receive the wrong treatment 
   - `how_to_choose_k.ipynb`
   - `kmeans_optimization.ipynb`
 
+## Method Choice Rationale
+
+- **Why RFM first:** RFM provides high interpretability for business stakeholders and is easy to operationalize in CRM tooling.
+- **Why KMeans:** efficient baseline for compact, centroid-based customer groups and straightforward to explain.
+- **Why DBSCAN comparison:** tests whether density-based structure exists and helps detect noise/outlier-heavy cohorts.
+- **Why rule-based labels + clustering:** rule-based segments improve explainability; clustering adds pattern discovery and sanity-checking.
+- **Why keep `k=3` baseline despite stronger silhouette at `k=2`:** `k=3` offers better campaign action granularity (e.g., retain / grow / reactivate) while staying operationally simple.
+
+## Experiment Design Notes
+
+- KMeans search over `k=2..10` with fixed random state.
+- Standardization is applied before clustering to prevent feature-scale dominance.
+- Metrics are interpreted jointly:
+  - SSE trend checks diminishing returns.
+  - Silhouette checks cluster separability.
+- Final segmenting decision is not metric-only; it is made with business actionability in mind.
+
 ## Evaluation Metrics
 
 For KMeans model selection:
@@ -58,6 +75,11 @@ For KMeans model selection:
 - **Silhouette Score** for cluster separation quality
 
 Current run output (`outputs/kmeans_metrics.csv`) includes `k=2..10` with both metrics.
+
+Metric caveat:
+
+- High silhouette does not automatically mean best business segmentation.
+- A production choice should balance statistical fit, interpretability, and operational usefulness.
 
 ## Results
 
@@ -82,6 +104,8 @@ From the latest generated metrics:
 - No A/B test or campaign uplift measurement is included yet.
 - Segment business impact is not tied to downstream revenue experiments in this repository.
 - Data represents one retail context; generalization across industries is not guaranteed.
+- Cluster stability across time windows is not yet evaluated.
+- Sensitivity analysis for DBSCAN parameters (`eps`, `min_samples`) is not yet formalized.
 
 ## Future Improvements
 
