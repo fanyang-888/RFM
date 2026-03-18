@@ -5,6 +5,13 @@
 This project transforms retail transaction logs into actionable customer segments using RFM (Recency, Frequency, Monetary) and clustering diagnostics (KMeans, DBSCAN).  
 It is designed as a practical baseline for lifecycle marketing decisions such as retention prioritization, win-back targeting, and high-value cohort management.
 
+### Key Outcomes Snapshot (Latest Run)
+
+- Customers segmented: **4,338**
+- KMeans clusters generated: **3**
+- DBSCAN groups (including noise label): **4**
+- Largest rule-based segment: **New/Low Activity (1,742 customers)**
+
 ## Business Problem
 
 Retail teams often run broad campaigns without clear audience prioritization.  
