@@ -1,12 +1,35 @@
-# RFM Customer Segmentation Project
+# RFM Customer Segmentation for Lifecycle Marketing
 
-This repository contains a retail customer segmentation workflow based on RFM analysis:
+Production-oriented customer segmentation case study for an e-commerce/retail context.
 
-- **Recency**: how recently a customer purchased
-- **Frequency**: how often a customer purchased
-- **Monetary**: how much a customer spent
+## Why This Project Matters
 
-It also includes clustering experiments (KMeans and DBSCAN) and notebook-based exploration.
+Most retail teams can describe customer behavior, but struggle to turn transaction logs into **actionable segment decisions**.
+This project demonstrates how to convert raw invoice-level data into customer segments that can support:
+
+- retention prioritization,
+- campaign targeting,
+- and value-based lifecycle strategy.
+
+## Business Problem
+
+Marketing teams often apply one-size-fits-all campaigns, causing:
+
+- high spend on low-value audiences,
+- weak retention treatment for high-risk customers,
+- and unclear prioritization between "high value", "at risk", and "new" segments.
+
+## Who Cares
+
+- **Growth/CRM Managers**: need practical audience definitions for campaign execution.
+- **Product/Analytics Teams**: need transparent segmentation logic tied to measurable behaviors.
+- **Leadership**: need a simple way to prioritize customer cohorts by business impact.
+
+## Business Value Created
+
+- Builds an interpretable RFM segmentation baseline for lifecycle marketing.
+- Adds clustering-based segmentation diagnostics (KMeans/DBSCAN) for pattern discovery.
+- Produces reusable outputs for downstream campaign planning and experimentation.
 
 ## Project Files
 
@@ -36,6 +59,6 @@ No external data download is required for the local workflow after localization 
 
 ## Notes
 
-- The project is being actively standardized to fully English content and outputs.
-- Small, incremental commits are pushed to GitHub after each completed step.
+- The repository is being upgraded as a hiring-focused portfolio project.
+- Small, scoped commits are pushed incrementally to keep changes reviewable.
 
