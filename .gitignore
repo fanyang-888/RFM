@@ -18,4 +18,6 @@ venv/
 # OS / misc
 .DS_Store
 *.log
+*.db
+plotly_example.html
 
