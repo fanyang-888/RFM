@@ -1,64 +1,134 @@
 # RFM Customer Segmentation for Lifecycle Marketing
 
-Production-oriented customer segmentation case study for an e-commerce/retail context.
+## Executive Summary
 
-## Why This Project Matters
-
-Most retail teams can describe customer behavior, but struggle to turn transaction logs into **actionable segment decisions**.
-This project demonstrates how to convert raw invoice-level data into customer segments that can support:
-
-- retention prioritization,
-- campaign targeting,
-- and value-based lifecycle strategy.
+This project transforms retail transaction logs into actionable customer segments using RFM (Recency, Frequency, Monetary) and clustering diagnostics (KMeans, DBSCAN).  
+It is designed as a practical baseline for lifecycle marketing decisions such as retention prioritization, win-back targeting, and high-value cohort management.
 
 ## Business Problem
 
-Marketing teams often apply one-size-fits-all campaigns, causing:
+Retail teams often run broad campaigns without clear audience prioritization.  
+As a result, high-value and high-risk customers may receive the wrong treatment while spend is wasted on low-impact segments.
 
-- high spend on low-value audiences,
-- weak retention treatment for high-risk customers,
-- and unclear prioritization between "high value", "at risk", and "new" segments.
+## Objective / Hypothesis
 
-## Who Cares
+**Objective:** Build an interpretable segmentation framework from transaction data that can be used by CRM/Growth teams.  
+**Hypothesis:** RFM-based cohorts, supported by unsupervised clustering diagnostics, can reveal distinct customer behavior groups and improve campaign planning quality.
 
-- **Growth/CRM Managers**: need practical audience definitions for campaign execution.
-- **Product/Analytics Teams**: need transparent segmentation logic tied to measurable behaviors.
-- **Leadership**: need a simple way to prioritize customer cohorts by business impact.
+## Dataset
 
-## Business Value Created
+- Source file: `rfm_stock_data.csv`
+- Granularity: transaction-level records
+- Key fields: `InvoiceNo`, `InvoiceDate`, `Quantity`, `UnitPrice`, `CustomerID`, `Country`
+- Domain context: UK online retail transactions
 
-- Builds an interpretable RFM segmentation baseline for lifecycle marketing.
-- Adds clustering-based segmentation diagnostics (KMeans/DBSCAN) for pattern discovery.
-- Produces reusable outputs for downstream campaign planning and experimentation.
+## Methodology
 
-## Project Files
+1. **Data preparation**
+   - Remove canceled invoices and invalid quantity/price rows
+   - Parse timestamp fields and derive `totalcost`
+2. **RFM feature engineering**
+   - `Recency`: days since last purchase
+   - `Frequency`: distinct invoice count per customer
+   - `Monetary`: total spend per customer
+3. **Segmentation approaches**
+   - Rule-based segment labels from normalized R/F/M behavior
+   - KMeans clustering with k-range diagnostics
+   - DBSCAN clustering as a density-based comparison
 
-- `rfm_customer_segmentation.ipynb`: end-to-end RFM analysis and segmentation notebook
-- `how_to_choose_k.ipynb`: K selection notes and experiments
-- `kmeans_optimization.ipynb`: KMeans optimization experiments
-- `rfm_project_overview.md`: project background and business context
-- `K-means.md`: KMeans notes and references
-- `rfm_stock_data.csv`: source dataset
+## Technical Approach
 
-## Quick Start
+- Modular pipeline in `src/rfm/`:
+  - `data.py`: loading + cleaning
+  - `features.py`: RFM feature construction and quartile scoring
+  - `labels.py`: rule-based segment mapping
+  - `segmentation.py`: KMeans/DBSCAN and cluster diagnostics
+- Reproducible runner:
+  - `scripts/run_rfm_segmentation.py`
+- Notebook artifacts:
+  - `rfm_customer_segmentation.ipynb`
+  - `how_to_choose_k.ipynb`
+  - `kmeans_optimization.ipynb`
 
-1. Create and activate a Python environment (Python 3.9+ recommended).
-2. Install dependencies (example):
+## Evaluation Metrics
+
+For KMeans model selection:
+
+- **SSE (Elbow Curve)** for compactness trend
+- **Silhouette Score** for cluster separation quality
+
+Current run output (`outputs/kmeans_metrics.csv`) includes `k=2..10` with both metrics.
+
+## Results
+
+From the latest generated metrics:
+
+- Best silhouette score appears at `k=2` (`0.8958`)
+- Operational baseline in pipeline uses `k=3` for more granular segmentation
+- Output artifacts generated:
+  - `outputs/kmeans_metrics.csv`
+  - `outputs/kmeans_selection.png`
+  - `outputs/rfm_segmentation.csv`
+
+## Business Insights / Recommendations
+
+- Use segment-based treatment strategy instead of one-size-fits-all campaigns.
+- Prioritize retention budgets on high-value but declining-frequency cohorts.
+- Create separate onboarding and activation flows for low-activity/new cohorts.
+- Use clustering diagnostics as a decision aid, not as the only segmentation authority.
+
+## Limitations
+
+- No A/B test or campaign uplift measurement is included yet.
+- Segment business impact is not tied to downstream revenue experiments in this repository.
+- Data represents one retail context; generalization across industries is not guaranteed.
+
+## Future Improvements
+
+- Add uplift evaluation framework (e.g., retention or conversion lift by segment).
+- Compare additional algorithms (e.g., GMM, HDBSCAN) with explicit trade-off criteria.
+- Add lightweight tests and data quality checks for production-readiness.
+- Package as a simple API or scheduled batch job for deployment simulation.
+
+## Repository Structure
+
+```text
+.
+├── README.md
+├── rfm_stock_data.csv
+├── outputs/
+│   ├── kmeans_metrics.csv
+│   ├── kmeans_selection.png
+│   └── rfm_segmentation.csv
+├── scripts/
+│   └── run_rfm_segmentation.py
+├── src/
+│   └── rfm/
+│       ├── __init__.py
+│       ├── data.py
+│       ├── features.py
+│       ├── labels.py
+│       └── segmentation.py
+├── rfm_customer_segmentation.ipynb
+├── how_to_choose_k.ipynb
+└── kmeans_optimization.ipynb
+```
+
+## How to Reproduce
+
+1. Create environment (Python 3.10+ recommended).
+2. Install dependencies:
    - `pandas`
    - `numpy`
    - `matplotlib`
-   - `seaborn`
    - `scikit-learn`
    - `jupyter`
-3. Open the notebooks and run cells from top to bottom.
-
-## Data
-
-The project uses `rfm_stock_data.csv` in the repository root.  
-No external data download is required for the local workflow after localization updates.
-
-## Notes
-
-- The repository is being upgraded as a hiring-focused portfolio project.
-- Small, scoped commits are pushed incrementally to keep changes reviewable.
+3. Run pipeline:
+   - PowerShell:
+     - `$env:PYTHONPATH="src"`
+     - `python scripts/run_rfm_segmentation.py`
+4. (Optional) Re-run notebooks:
+   - `python -m jupyter nbconvert --to notebook --execute --inplace rfm_customer_segmentation.ipynb`
+   - `python -m jupyter nbconvert --to notebook --execute --inplace how_to_choose_k.ipynb`
+   - `python -m jupyter nbconvert --to notebook --execute --inplace kmeans_optimization.ipynb`
 
