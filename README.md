@@ -176,11 +176,7 @@ From the latest generated metrics:
 
 1. Create environment (Python 3.10+ recommended).
 2. Install dependencies:
-   - `pandas`
-   - `numpy`
-   - `matplotlib`
-   - `scikit-learn`
-   - `jupyter`
+   - `pip install -r requirements.txt`
 3. Run pipeline:
    - PowerShell:
      - `$env:PYTHONPATH="src"`
@@ -189,4 +185,8 @@ From the latest generated metrics:
    - `python -m jupyter nbconvert --to notebook --execute --inplace rfm_customer_segmentation.ipynb`
    - `python -m jupyter nbconvert --to notebook --execute --inplace how_to_choose_k.ipynb`
    - `python -m jupyter nbconvert --to notebook --execute --inplace kmeans_optimization.ipynb`
+5. Run tests:
+   - PowerShell:
+     - `$env:PYTHONPATH="src"`
+     - `python -m pytest -q`
 
