@@ -99,6 +99,40 @@ From the latest generated metrics:
 - Create separate onboarding and activation flows for low-activity/new cohorts.
 - Use clustering diagnostics as a decision aid, not as the only segmentation authority.
 
+## Decision-Making and Trade-Offs
+
+1. **Interpretability vs. modeling complexity**
+   - Chosen: RFM + KMeans baseline
+   - Trade-off: gives stakeholder clarity and fast deployment, at the cost of missing some non-linear structures.
+2. **Best metric value vs. campaign usability**
+   - Silhouette peaks at `k=2`, but `k=3` is maintained as baseline for finer treatment design.
+3. **Rule-based consistency vs. unsupervised flexibility**
+   - Rule-based segments support governance and explainability.
+   - Unsupervised clusters provide additional exploratory signal.
+4. **Speed vs. exhaustive search**
+   - Current setup favors reproducible baseline over large hyperparameter sweeps.
+
+## Statistical and Analytical Rigor
+
+- Explicit feature construction with reproducible formulas for R/F/M.
+- Standardization applied before distance-based clustering.
+- Multiple diagnostics used jointly (SSE + silhouette), not single-metric optimization.
+- Limitations are documented to prevent over-claiming.
+
+## Engineering Maturity Signals
+
+- Refactored notebook logic into reusable modules under `src/rfm/`.
+- Added deterministic script execution path with artifact outputs.
+- Separated exploratory notebooks from reusable pipeline code.
+- Established incremental commit history for auditable iteration.
+
+## Interview Readiness (What to Defend)
+
+- Why this segmentation design is practical for CRM execution.
+- Why `k=3` is a business decision, not a purely mathematical optimum.
+- What assumptions could break in production (seasonality, data drift, channel shifts).
+- What the next validation step is before shipping to a marketing team.
+
 ## Limitations
 
 - No A/B test or campaign uplift measurement is included yet.
