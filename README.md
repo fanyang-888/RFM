@@ -1,159 +1,85 @@
-# RFM Customer Segmentation for Lifecycle Marketing
+# Customer Segmentation and Revenue Optimization with RFM
 
 ## Executive Summary
 
-This project transforms retail transaction logs into actionable customer segments using RFM (Recency, Frequency, Monetary) and clustering diagnostics (KMeans, DBSCAN).  
-It is designed as a practical baseline for lifecycle marketing decisions such as retention prioritization, win-back targeting, and high-value cohort management.
+This project turns transaction logs into customer decisions.  
+Instead of stopping at segment labels, the pipeline is designed to answer: which customers should be retained, reactivated, upsold, or deprioritized to improve marketing ROI.
 
-### Key Outcomes Snapshot (Latest Run)
-
-- Customers segmented: **4,338**
-- KMeans clusters generated: **3**
-- DBSCAN groups (including noise label): **4**
-- Largest rule-based segment: **New/Low Activity (1,742 customers)**
+The baseline solution combines interpretable RFM segmentation with clustering diagnostics and produces reusable artifacts for downstream decision workflows.
 
 ## Business Problem
 
-Retail teams often run broad campaigns without clear audience prioritization.  
-As a result, high-value and high-risk customers may receive the wrong treatment while spend is wasted on low-impact segments.
+Lifecycle marketing teams often run broad campaigns with weak prioritization.  
+This causes three recurring losses:
 
-## Objective / Hypothesis
+- under-investment in high-value customers,
+- delayed intervention for at-risk customers,
+- wasteful spend on low-probability segments.
 
-**Objective:** Build an interpretable segmentation framework from transaction data that can be used by CRM/Growth teams.  
-**Hypothesis:** RFM-based cohorts, supported by unsupervised clustering diagnostics, can reveal distinct customer behavior groups and improve campaign planning quality.
+The objective of this repository is to provide a practical, transparent segmentation foundation that can be operationalized by CRM and Growth teams.
 
-## Dataset
+## Decision Framework
 
-- Source file: `rfm_stock_data.csv`
-- Granularity: transaction-level records
-- Key fields: `InvoiceNo`, `InvoiceDate`, `Quantity`, `UnitPrice`, `CustomerID`, `Country`
-- Domain context: UK online retail transactions
+### Segment and action logic
+
+The project uses rule-based labels and clustering outputs to support campaign decisions:
+
+- `High Value` and `Loyal`: retention and VIP benefits to protect long-term value.
+- `Potential Loyalist` and `Promising`: upsell/cross-sell to increase basket value.
+- `At Risk - High Value`: win-back programs with controlled incentives.
+- `New/Low Activity` and `Hibernating`: low-cost activation or selective suppression.
+
+### Why this approach
+
+- RFM provides high interpretability for non-technical stakeholders.
+- KMeans and DBSCAN offer complementary structure checks.
+- The final segmentation choice favors business actionability, not metric optimization alone.
 
 ## Methodology
 
-1. **Data preparation**
-   - Remove canceled invoices and invalid quantity/price rows
-   - Parse timestamp fields and derive `totalcost`
-2. **RFM feature engineering**
-   - `Recency`: days since last purchase
-   - `Frequency`: distinct invoice count per customer
-   - `Monetary`: total spend per customer
-3. **Segmentation approaches**
-   - Rule-based segment labels from normalized R/F/M behavior
-   - KMeans clustering with k-range diagnostics
-   - DBSCAN clustering as a density-based comparison
+1. Data loading and cleaning (`src/rfm/data.py`)
+   - remove canceled invoices and invalid quantity/price rows,
+   - parse timestamps and compute transaction value (`totalcost`).
+2. Feature engineering (`src/rfm/features.py`)
+   - build `Recency`, `Frequency`, `Monetary` per customer,
+   - add quartile scores for explainable ranking.
+3. Labeling and clustering
+   - rule-based labels (`src/rfm/labels.py`),
+   - KMeans/DBSCAN diagnostics (`src/rfm/segmentation.py`).
+4. Reproducible run path
+   - script entrypoint: `scripts/run_rfm_segmentation.py`.
 
-## Technical Approach
+## Results (Current Baseline Run)
 
-- Modular pipeline in `src/rfm/`:
-  - `data.py`: loading + cleaning
-  - `features.py`: RFM feature construction and quartile scoring
-  - `labels.py`: rule-based segment mapping
-  - `segmentation.py`: KMeans/DBSCAN and cluster diagnostics
-- Reproducible runner:
-  - `scripts/run_rfm_segmentation.py`
-- Notebook artifacts:
-  - `rfm_customer_segmentation.ipynb`
-  - `how_to_choose_k.ipynb`
-  - `kmeans_optimization.ipynb`
+- Customers segmented: **4,338**
+- KMeans baseline clusters: **3**
+- DBSCAN groups (including noise): **4**
+- Largest rule-based segment: **New/Low Activity (1,742 customers)**
+- KMeans silhouette peak in search range: **k=2 (0.8958)**, while **k=3** is retained for campaign granularity.
 
-## Method Choice Rationale
+Generated artifacts:
 
-- **Why RFM first:** RFM provides high interpretability for business stakeholders and is easy to operationalize in CRM tooling.
-- **Why KMeans:** efficient baseline for compact, centroid-based customer groups and straightforward to explain.
-- **Why DBSCAN comparison:** tests whether density-based structure exists and helps detect noise/outlier-heavy cohorts.
-- **Why rule-based labels + clustering:** rule-based segments improve explainability; clustering adds pattern discovery and sanity-checking.
-- **Why keep `k=3` baseline despite stronger silhouette at `k=2`:** `k=3` offers better campaign action granularity (e.g., retain / grow / reactivate) while staying operationally simple.
+- `outputs/rfm_segmentation.csv`
+- `outputs/kmeans_metrics.csv`
+- `outputs/kmeans_selection.png`
 
-## Experiment Design Notes
+## Business Recommendations
 
-- KMeans search over `k=2..10` with fixed random state.
-- Standardization is applied before clustering to prevent feature-scale dominance.
-- Metrics are interpreted jointly:
-  - SSE trend checks diminishing returns.
-  - Silhouette checks cluster separability.
-- Final segmenting decision is not metric-only; it is made with business actionability in mind.
+Recommended baseline actions from current segmentation:
 
-## Evaluation Metrics
+- Protect `High Value` and `Loyal` cohorts with loyalty offers and service quality controls.
+- Run targeted reactivation campaigns for `At Risk - High Value` customers.
+- Build onboarding and second-purchase journeys for `New/Low Activity`.
+- Reduce paid-channel pressure for persistently low-value dormant users.
 
-For KMeans model selection:
+## Interview Defensibility
 
-- **SSE (Elbow Curve)** for compactness trend
-- **Silhouette Score** for cluster separation quality
+This repository is designed to support common hiring-manager questions:
 
-Current run output (`outputs/kmeans_metrics.csv`) includes `k=2..10` with both metrics.
-
-Metric caveat:
-
-- High silhouette does not automatically mean best business segmentation.
-- A production choice should balance statistical fit, interpretability, and operational usefulness.
-
-## Results
-
-From the latest generated metrics:
-
-- Best silhouette score appears at `k=2` (`0.8958`)
-- Operational baseline in pipeline uses `k=3` for more granular segmentation
-- Output artifacts generated:
-  - `outputs/kmeans_metrics.csv`
-  - `outputs/kmeans_selection.png`
-  - `outputs/rfm_segmentation.csv`
-
-## Business Insights / Recommendations
-
-- Use segment-based treatment strategy instead of one-size-fits-all campaigns.
-- Prioritize retention budgets on high-value but declining-frequency cohorts.
-- Create separate onboarding and activation flows for low-activity/new cohorts.
-- Use clustering diagnostics as a decision aid, not as the only segmentation authority.
-
-## Decision-Making and Trade-Offs
-
-1. **Interpretability vs. modeling complexity**
-   - Chosen: RFM + KMeans baseline
-   - Trade-off: gives stakeholder clarity and fast deployment, at the cost of missing some non-linear structures.
-2. **Best metric value vs. campaign usability**
-   - Silhouette peaks at `k=2`, but `k=3` is maintained as baseline for finer treatment design.
-3. **Rule-based consistency vs. unsupervised flexibility**
-   - Rule-based segments support governance and explainability.
-   - Unsupervised clusters provide additional exploratory signal.
-4. **Speed vs. exhaustive search**
-   - Current setup favors reproducible baseline over large hyperparameter sweeps.
-
-## Statistical and Analytical Rigor
-
-- Explicit feature construction with reproducible formulas for R/F/M.
-- Standardization applied before distance-based clustering.
-- Multiple diagnostics used jointly (SSE + silhouette), not single-metric optimization.
-- Limitations are documented to prevent over-claiming.
-
-## Engineering Maturity Signals
-
-- Refactored notebook logic into reusable modules under `src/rfm/`.
-- Added deterministic script execution path with artifact outputs.
-- Separated exploratory notebooks from reusable pipeline code.
-- Established incremental commit history for auditable iteration.
-
-## Interview Readiness (What to Defend)
-
-- Why this segmentation design is practical for CRM execution.
-- Why `k=3` is a business decision, not a purely mathematical optimum.
-- What assumptions could break in production (seasonality, data drift, channel shifts).
-- What the next validation step is before shipping to a marketing team.
-
-## Limitations
-
-- No A/B test or campaign uplift measurement is included yet.
-- Segment business impact is not tied to downstream revenue experiments in this repository.
-- Data represents one retail context; generalization across industries is not guaranteed.
-- Cluster stability across time windows is not yet evaluated.
-- Sensitivity analysis for DBSCAN parameters (`eps`, `min_samples`) is not yet formalized.
-
-## Future Improvements
-
-- Add uplift evaluation framework (e.g., retention or conversion lift by segment).
-- Compare additional algorithms (e.g., GMM, HDBSCAN) with explicit trade-off criteria.
-- Add lightweight tests and data quality checks for production-readiness.
-- Package as a simple API or scheduled batch job for deployment simulation.
+- Why start with RFM instead of direct clustering?
+- Why use `k=3` although silhouette peaks at `k=2`?
+- How should decisions change for high-frequency but low-monetary users?
+- How would you validate segment impact on revenue and retention?
 
 ## Repository Structure
 
@@ -162,38 +88,13 @@ From the latest generated metrics:
 ├── README.md
 ├── rfm_stock_data.csv
 ├── outputs/
-│   ├── kmeans_metrics.csv
-│   ├── kmeans_selection.png
-│   └── rfm_segmentation.csv
 ├── scripts/
 │   └── run_rfm_segmentation.py
 ├── src/
 │   └── rfm/
-│       ├── __init__.py
-│       ├── data.py
-│       ├── features.py
-│       ├── labels.py
-│       └── segmentation.py
+├── tests/
 ├── rfm_customer_segmentation.ipynb
 ├── how_to_choose_k.ipynb
 └── kmeans_optimization.ipynb
 ```
-
-## How to Reproduce
-
-1. Create environment (Python 3.10+ recommended).
-2. Install dependencies:
-   - `pip install -r requirements.txt`
-3. Run pipeline:
-   - PowerShell:
-     - `$env:PYTHONPATH="src"`
-     - `python scripts/run_rfm_segmentation.py`
-4. (Optional) Re-run notebooks:
-   - `python -m jupyter nbconvert --to notebook --execute --inplace rfm_customer_segmentation.ipynb`
-   - `python -m jupyter nbconvert --to notebook --execute --inplace how_to_choose_k.ipynb`
-   - `python -m jupyter nbconvert --to notebook --execute --inplace kmeans_optimization.ipynb`
-5. Run tests:
-   - PowerShell:
-     - `$env:PYTHONPATH="src"`
-     - `python -m pytest -q`
 
