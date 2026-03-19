@@ -16,7 +16,19 @@ def test_build_segment_action_plan_outputs_decision_columns() -> None:
     )
     out = build_segment_action_plan(summary, segment_col="rule_label")
 
-    required = {"priority_tier", "objective", "recommended_action", "channel", "spend_guidance"}
+    required = {
+        "priority_tier",
+        "ltv_signal_tier",
+        "objective",
+        "recommended_action",
+        "channel",
+        "spend_guidance",
+        "expected_roi_proxy",
+        "decision_rule",
+    }
     assert required.issubset(out.columns)
     assert out["priority_tier"].notna().all()
+    assert out["ltv_signal_tier"].notna().all()
     assert out["recommended_action"].str.len().gt(0).all()
+    assert out["expected_roi_proxy"].str.len().gt(0).all()
+    assert out["decision_rule"].str.len().gt(0).all()

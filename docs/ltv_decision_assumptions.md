@@ -38,8 +38,16 @@ Interpretation:
 - Seasonal effects and channel mix changes can shift performance.
 - Priority tiers should be recalibrated regularly with fresh data.
 
+## Why not ML now
+
+- Available features are primarily transactional and do not yet include richer user intent, campaign exposure, or channel interaction history.
+- Label quality for supervised LTV/churn learning is currently limited in this repository scope.
+- The current objective is a transparent decision baseline that business teams can audit and operationalize quickly.
+- A model-based upgrade is planned only after feature and label maturity improves.
+
 ## Validation recommendations
 
 - Track conversion and incremental revenue by segment-action pair.
 - Run holdout or A/B experiments for each major tactic.
 - Reassess thresholds and policy mapping quarterly.
+- Backtest segment ranking stability across historical time windows.

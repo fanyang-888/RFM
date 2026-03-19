@@ -109,13 +109,28 @@ Recommended baseline actions from current segmentation:
 - Build onboarding and second-purchase journeys for `New/Low Activity`.
 - Reduce paid-channel pressure for persistently low-value dormant users.
 
-## Assumptions and Trade-offs
+## Assumptions and Limitations
 
-- LTV is estimated with a transparent heuristic (recency decay + frequency multiplier), not a causal model.
-- Segment action policy is a default operating framework and should be calibrated with campaign outcomes.
-- This repository optimizes for interpretability and decision readiness before model complexity.
+- The LTV heuristic assumes historical purchase behavior is a practical proxy for near-term value.
+- The system does not explicitly model seasonality, macro shocks, pricing changes, or channel supply shifts.
+- `expected_roi_proxy` is a prioritization aid, not a causal estimate of uplift.
+- Segment policy is intentionally conservative and should be recalibrated with campaign evidence.
 
-Assumptions are documented in `docs/ltv_decision_assumptions.md`.
+## Why not ML now?
+
+- Feature coverage is limited to transactional behavior and does not include richer intent/channel context.
+- For CRM execution, interpretability is currently prioritized over model complexity.
+- Segment-level value estimation is already sufficient for budget prioritization in a baseline workflow.
+- A supervised LTV/churn model is reserved for the next iteration after data enrichment and labeling.
+
+## Validation Plan
+
+- Compare revenue and estimated value concentration across segments and priority tiers.
+- Run sensitivity analysis on LTV assumptions (for example, recency half-life and ROI proxy bands).
+- Backtest policy rules on historical cohorts to measure stability of segment ranking over time.
+- Validate campaign effects with holdout/A/B experiments before scaling spend.
+
+Detailed assumptions are documented in `docs/ltv_decision_assumptions.md`.
 
 ## Interview Defensibility
 
