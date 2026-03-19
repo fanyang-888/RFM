@@ -68,6 +68,38 @@ Generated artifacts:
 - `outputs/segment_value_summary.csv`
 - `outputs/segment_action_plan.csv`
 
+## Impact (Estimated/Simulated)
+
+- Top **20%** customers contribute **74.62%** of observed revenue.
+- Top **20%** customers contribute **85.69%** of estimated LTV.
+- `P1 - Protect` segments account for **87.06%** of estimated LTV and include **2,431** customers.
+- `At Risk - High Value` customers represent **4.24%** of total estimated LTV; a **5-10%** recovery rate in this segment implies an estimated **0.21-0.42%** total value lift.
+
+These values are deterministic outputs from the current artifact set and serve as decision support baselines.
+
+## Decision System (Input -> Output)
+
+Inputs:
+
+- rule-based segment (`rule_label`)
+- estimated value signal (`estimated_ltv`, `estimated_ltv_share`)
+- policy priority tier (`priority_tier`)
+
+Outputs:
+
+- recommended business action (`recommended_action`)
+- execution priority (`P1/P2/P3`)
+- channel strategy (`channel`)
+
+Illustrative decision table from current policy:
+
+| Segment | LTV signal | Action | Priority |
+| --- | --- | --- | --- |
+| High Value | High (79.48% segment value concentration) | VIP loyalty treatment with service guarantees | P1 - Protect |
+| At Risk - High Value | High value with weaker engagement | Time-boxed win-back incentive | P2 - Grow |
+| New/Low Activity | Medium value and low activity | Onboarding flow focused on second purchase | P1 - Protect |
+| Hibernating | Low value and very low engagement | Low-cost reactivation then suppression | P2 - Grow |
+
 ## Business Recommendations
 
 Recommended baseline actions from current segmentation:
