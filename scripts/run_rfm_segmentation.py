@@ -8,6 +8,7 @@ from rfm.data import load_transactions
 from rfm.features import add_quartile_scores, build_rfm_table
 from rfm.labels import add_rule_based_label
 from rfm.ltv import estimate_customer_ltv, summarize_ltv_by_segment
+from rfm.policy import build_segment_action_plan
 from rfm.segmentation import evaluate_kmeans_range, fit_dbscan, fit_kmeans
 
 
@@ -30,10 +31,12 @@ def main() -> None:
     rfm["dbscan_cluster"] = db_labels
     ltv = estimate_customer_ltv(rfm)
     segment_value = summarize_ltv_by_segment(ltv, segment_col="rule_label")
+    segment_actions = build_segment_action_plan(segment_value, segment_col="rule_label")
 
     rfm.to_csv(output_dir / "rfm_segmentation.csv")
     ltv.to_csv(output_dir / "customer_ltv.csv")
     segment_value.to_csv(output_dir / "segment_value_summary.csv", index=False)
+    segment_actions.to_csv(output_dir / "segment_action_plan.csv", index=False)
     metrics.to_csv(output_dir / "kmeans_metrics.csv", index=False)
 
     fig, axes = plt.subplots(1, 2, figsize=(12, 4))
