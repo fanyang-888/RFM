@@ -52,6 +52,12 @@ PRIORITY_SPEND_GUIDANCE = {
     "P3 - Maintain": "Low budget, automation-first treatment",
 }
 
+EXPECTED_ROI_PROXY = {
+    "P1 - Protect": "6-12% incremental return potential",
+    "P2 - Grow": "3-8% incremental return potential",
+    "P3 - Maintain": "0-3% incremental return potential",
+}
+
 
 def _assign_priority_tier(summary: pd.DataFrame) -> pd.Series:
     """Assign priority tiers by estimated LTV contribution."""
@@ -62,6 +68,31 @@ def _assign_priority_tier(summary: pd.DataFrame) -> pd.Series:
         labels=["P1 - Protect", "P2 - Grow", "P3 - Maintain"],
         include_lowest=True,
     ).astype(str)
+
+
+def _assign_ltv_signal_tier(summary: pd.DataFrame) -> pd.Series:
+    """Classify segment value signal strength by LTV share."""
+    share = summary["estimated_ltv_share"]
+    return pd.cut(
+        share,
+        bins=[-0.001, 0.04, 0.15, 1.0],
+        labels=["Low", "Medium", "High"],
+        include_lowest=True,
+    ).astype(str)
+
+
+def _decision_rule_text(row: pd.Series) -> str:
+    signal = row["ltv_signal_tier"]
+    objective = row["objective"]
+    if signal == "High" and objective in {"Reactivate", "Selective reactivation"}:
+        return "High value + weak engagement -> prioritize reactivation"
+    if signal == "Medium" and objective == "Reactivate":
+        return "Mid-high value + weakening engagement -> run controlled win-back"
+    if signal == "High" and objective in {"Retain", "Retain and grow"}:
+        return "High value + strong engagement -> invest in retention"
+    if signal in {"Low", "Medium"} and objective in {"Activate", "Nurture", "Stabilize", "Grow"}:
+        return "Lower value or early lifecycle -> focus on efficient growth"
+    return "Run controlled campaign and reassess with new data"
 
 
 def build_segment_action_plan(
@@ -76,6 +107,7 @@ def build_segment_action_plan(
 
     out = segment_value_summary.copy()
     out["priority_tier"] = _assign_priority_tier(out)
+    out["ltv_signal_tier"] = _assign_ltv_signal_tier(out)
 
     out["objective"] = out[segment_col].map(
         lambda s: SEGMENT_POLICY.get(s, {}).get("objective", "Monitor")
@@ -90,4 +122,6 @@ def build_segment_action_plan(
         lambda s: SEGMENT_POLICY.get(s, {}).get("channel", "Email automation")
     )
     out["spend_guidance"] = out["priority_tier"].map(PRIORITY_SPEND_GUIDANCE)
+    out["expected_roi_proxy"] = out["priority_tier"].map(EXPECTED_ROI_PROXY)
+    out["decision_rule"] = out.apply(_decision_rule_text, axis=1)
     return out

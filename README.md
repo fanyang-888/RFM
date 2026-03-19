@@ -93,12 +93,12 @@ Outputs:
 
 Illustrative decision table from current policy:
 
-| Segment | LTV signal | Action | Priority |
-| --- | --- | --- | --- |
-| High Value | High (79.48% segment value concentration) | VIP loyalty treatment with service guarantees | P1 - Protect |
-| At Risk - High Value | High value with weaker engagement | Time-boxed win-back incentive | P2 - Grow |
-| New/Low Activity | Medium value and low activity | Onboarding flow focused on second purchase | P1 - Protect |
-| Hibernating | Low value and very low engagement | Low-cost reactivation then suppression | P2 - Grow |
+| Segment | LTV signal | Action | Priority | Expected ROI proxy |
+| --- | --- | --- | --- | --- |
+| High Value | High (79.48% segment value concentration) | VIP loyalty treatment with service guarantees | P1 - Protect | 6-12% incremental return potential |
+| At Risk - High Value | Medium value with weaker engagement | Time-boxed win-back incentive | P2 - Grow | 3-8% incremental return potential |
+| New/Low Activity | Medium value and low activity | Onboarding flow focused on second purchase | P1 - Protect | 6-12% incremental return potential |
+| Hibernating | Low value and very low engagement | Low-cost reactivation then suppression | P2 - Grow | 3-8% incremental return potential |
 
 ## Business Recommendations
 
