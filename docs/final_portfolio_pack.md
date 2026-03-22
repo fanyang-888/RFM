@@ -2,8 +2,17 @@
 
 ## Resume Bullet Options
 
-1. Built a modular customer segmentation pipeline (RFM + KMeans/DBSCAN) from transaction-level retail data, transforming 4,338 customer records into interpretable lifecycle cohorts and reusable campaign-ready outputs.
-2. Refactored notebook-only analysis into reproducible Python modules and scripted execution (`src/` + `scripts/`), added metric diagnostics (SSE/silhouette), and introduced basic test coverage to improve production-readiness and technical credibility.
+### DS-Oriented Bullets
+
+1. Built an interpretable customer segmentation workflow on UK retail transactions (4,338 customers) using RFM features, rule-based lifecycle labels, and KMeans/DBSCAN diagnostics to balance operational explainability with structure validation.
+2. Strengthened validation with segment summary integrity checks, concentration analysis diagnostics (top-20% revenue/LTV contribution), and explicit reasoning for choosing an operational `k=3` baseline despite a higher `k=2` silhouette.
+3. Packaged the analysis into reproducible modules and scripted execution (`src/` + `scripts/`) with test coverage for feature, labeling, segmentation, and decision-policy contracts.
+
+### DA-Oriented Bullets
+
+1. Converted transaction-level data into decision-ready segment outputs and priority tiers (2 P1 / 3 P2 / 3 P3) that map directly to retain/reactivate/grow campaign actions.
+2. Added SQL and stakeholder-delivery artifacts by shipping `sql/rfm_segment_snapshot.sql` for customer-level aggregation and `docs/dashboard_spec.md` for KPI/page ownership handoff.
+3. Produced reusable outputs for downstream analytics (`rfm_segmentation`, `segment_value_summary`, `segment_action_plan`) to support budget prioritization and CRM execution planning.
 
 ## Likely Interview Questions and Answer Outlines
 
