@@ -78,6 +78,12 @@ Generated artifacts:
 - `outputs/segment_action_plan.csv`
 - `outputs/kmeans_stability.csv`
 
+## SQL and Dashboard Artifacts
+
+- SQL snapshot query for DA handoff: `sql/rfm_segment_snapshot.sql`
+- Dashboard implementation spec (KPI/pages/ownership): `docs/dashboard_spec.md`
+- These artifacts make the segmentation output directly consumable for BI/analytics workflows without changing the core DS pipeline.
+
 ## Impact (Estimated/Simulated)
 
 - Top **20%** customers contribute **74.62%** of observed revenue.
@@ -161,6 +167,8 @@ This repository is designed to support common hiring-manager questions:
 │   ├── customer_ltv.csv
 │   ├── segment_value_summary.csv
 │   └── segment_action_plan.csv
+├── sql/
+│   └── rfm_segment_snapshot.sql
 ├── scripts/
 │   └── run_rfm_segmentation.py
 ├── src/
@@ -168,6 +176,8 @@ This repository is designed to support common hiring-manager questions:
 │       ├── ltv.py
 │       └── policy.py
 ├── tests/
+├── docs/
+│   └── dashboard_spec.md
 ├── rfm_customer_segmentation.ipynb
 ├── how_to_choose_k.ipynb
 └── kmeans_optimization.ipynb
