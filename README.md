@@ -11,6 +11,9 @@
 - SQL for customer-level aggregation and reproducible segment snapshots: `sql/rfm_segment_snapshot.sql`
 - Dashboard specification for stakeholder delivery (KPI/pages/ownership): `docs/dashboard_spec.md`
 
+**Quick visual (value concentration):**
+![Top customer concentration](docs/assets/top_customer_concentration.png)
+
 ## Executive Summary
 
 This repository turns transaction logs into decision-ready customer priorities, with interpretable segmentation and reusable analytics artifacts.
