@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import pandas as pd
+import pytest
 
 from rfm.ltv import estimate_customer_ltv, summarize_ltv_by_segment
 
@@ -44,3 +45,11 @@ def test_segment_summary_integrity() -> None:
     )
     assert int(summary["customer_count"].sum()) == len(ltv)
     assert abs(float(summary["estimated_ltv_share"].sum()) - 1.0) < 1e-6
+    assert summary["estimated_ltv_share"].between(0.0, 1.0).all()
+    assert summary["estimated_ltv_total"].is_monotonic_decreasing
+
+
+def test_segment_summary_missing_segment_column_raises() -> None:
+    ltv = estimate_customer_ltv(_sample_rfm())
+    with pytest.raises(ValueError, match="required for segment summary"):
+        summarize_ltv_by_segment(ltv, segment_col="missing_segment")

@@ -76,6 +76,7 @@ Generated artifacts:
 - `outputs/customer_ltv.csv`
 - `outputs/segment_value_summary.csv`
 - `outputs/segment_action_plan.csv`
+- `outputs/kmeans_stability.csv`
 
 ## Impact (Estimated/Simulated)
 
@@ -134,10 +135,10 @@ Recommended baseline actions from current segmentation:
 
 ## Validation Plan
 
-- Compare revenue and estimated value concentration across segments and priority tiers.
-- Run sensitivity analysis on LTV assumptions (for example, recency half-life and ROI proxy bands).
-- Backtest policy rules on historical cohorts to measure stability of segment ranking over time.
-- Validate campaign effects with holdout/A/B experiments before scaling spend.
+- **Implemented diagnostics**: KMeans range evaluation includes `SSE`, `silhouette`, `Calinski-Harabasz`, and `Davies-Bouldin` in `outputs/kmeans_metrics.csv`.
+- **Implemented stability check**: multi-seed silhouette stability (`mean/std/min/max`) is exported to `outputs/kmeans_stability.csv`.
+- **Implemented segment summary validation**: test coverage verifies LTV-share integrity, descending value ordering, and column/contract checks for action planning inputs.
+- **Next validation steps**: sensitivity analysis on LTV assumptions, historical backtesting of policy ranking, and holdout/A/B measurement before spend scaling.
 
 Detailed assumptions are documented in `docs/ltv_decision_assumptions.md`.
 
