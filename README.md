@@ -1,20 +1,19 @@
 # Customer Segmentation and Revenue Optimization with RFM
 
-I built an interpretable customer segmentation workflow on transaction data to identify high-value, loyal, and churn-risk users, then convert segment insights into executable business priorities.
+## Project Snapshot Card (15-second read)
 
-## At-a-Glance for DS/DA Recruiters
+- **Problem**: Lifecycle marketing often under-serves high-value customers, reacts too late to churn-risk users, and overspends on low-probability cohorts.
+- **Method**: `data/raw/rfm_stock_data.csv` -> RFM features -> rule-based lifecycle labels + KMeans/DBSCAN diagnostics -> decision policy layer.
+- **Key Result**: 4,338 customers segmented; `k=3` operational baseline; `High Value` contributes 79.48% estimated LTV share; policy outputs 2 P1 / 3 P2 / 3 P3 priorities.
+- **Business Value**: Converts segmentation into campaign actions (retain/reactivate/grow/deprioritize) for faster and clearer budget allocation.
 
-- **Dataset**: UK online retail transactions (`data/raw/rfm_stock_data.csv`), customer-level aggregation across 2010-12-01 to 2011-12-09 after cleaning canceled and invalid rows.
-- **Method**: RFM feature engineering + rule-based lifecycle labels + KMeans/DBSCAN diagnostics + policy layer for priority/action mapping.
-- **Key Result**: 4,338 customers segmented; `k=3` baseline for campaign granularity; `High Value` contributes 79.48% estimated LTV share; policy output allocates 2 P1, 3 P2, 3 P3 segment priorities.
-- **Business Implication**: Teams can prioritize retention for value-protect segments, run targeted win-back for at-risk value, scale efficient growth for mid-tier segments, and reduce waste on low-probability users.
+**DS/DA delivery artifacts (front-loaded):**
+- SQL for customer-level aggregation and reproducible segment snapshots: `sql/rfm_segment_snapshot.sql`
+- Dashboard specification for stakeholder delivery (KPI/pages/ownership): `docs/dashboard_spec.md`
 
 ## Executive Summary
 
-This project turns transaction logs into customer decisions.  
-Instead of stopping at segment labels, the pipeline is designed to answer: which customers should be retained, reactivated, upsold, or deprioritized to improve marketing ROI.
-
-The baseline solution combines interpretable RFM segmentation with clustering diagnostics and produces reusable artifacts for downstream decision workflows.
+This repository turns transaction logs into decision-ready customer priorities, with interpretable segmentation and reusable analytics artifacts.
 
 ## Business Problem
 
@@ -82,7 +81,7 @@ Generated artifacts:
 
 - SQL snapshot query for DA handoff: `sql/rfm_segment_snapshot.sql`
 - Dashboard implementation spec (KPI/pages/ownership): `docs/dashboard_spec.md`
-- These artifacts make the segmentation output directly consumable for BI/analytics workflows without changing the core DS pipeline.
+- These artifacts are intentionally front-loaded above so DS/DA reviewers can spot delivery-readiness within the first screen.
 
 ## Impact (Estimated/Simulated)
 
