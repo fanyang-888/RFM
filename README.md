@@ -1,5 +1,14 @@
 # Customer Segmentation and Revenue Optimization with RFM
 
+I built an interpretable customer segmentation workflow on transaction data to identify high-value, loyal, and churn-risk users, then convert segment insights into executable business priorities.
+
+## At-a-Glance for DS/DA Recruiters
+
+- **Dataset**: UK online retail transactions (`rfm_stock_data.csv`), customer-level aggregation across 2010-12-01 to 2011-12-09 after cleaning canceled and invalid rows.
+- **Method**: RFM feature engineering + rule-based lifecycle labels + KMeans/DBSCAN diagnostics + policy layer for priority/action mapping.
+- **Key Result**: 4,338 customers segmented; `k=3` baseline for campaign granularity; `High Value` contributes 79.48% estimated LTV share; policy output allocates 2 P1, 3 P2, 3 P3 segment priorities.
+- **Business Implication**: Teams can prioritize retention for value-protect segments, run targeted win-back for at-risk value, scale efficient growth for mid-tier segments, and reduce waste on low-probability users.
+
 ## Executive Summary
 
 This project turns transaction logs into customer decisions.  
