@@ -19,7 +19,7 @@ from rfm.segmentation import (
 
 def main() -> None:
     root = Path(__file__).resolve().parents[1]
-    data_path = root / "rfm_stock_data.csv"
+    data_path = root / "data" / "raw" / "rfm_stock_data.csv"
     output_dir = root / "outputs"
     output_dir.mkdir(parents=True, exist_ok=True)
 
