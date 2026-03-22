@@ -43,6 +43,12 @@ The project uses rule-based labels and clustering outputs to support campaign de
 - KMeans and DBSCAN offer complementary structure checks.
 - The final segmentation choice favors business actionability, not metric optimization alone.
 
+## Validation Signals for DS Reviewers
+
+- **Segment summary validation**: tests enforce segment-level integrity (share sums, ordering, and action-plan contract columns).
+- **Concentration analysis validation**: value concentration is explicitly tracked via top-20% revenue/LTV contribution and segment-level LTV share diagnostics.
+- **Why rule-based labels and clustering are complementary**: rule labels provide stable and explainable operating cohorts, while clustering diagnostics validate latent structure and guard against overconfident rule-only segmentation.
+
 ## Methodology
 
 1. Data loading and cleaning (`src/rfm/data.py`)
