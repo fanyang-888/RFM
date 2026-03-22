@@ -1,17 +1,17 @@
 # Customer Segmentation and Revenue Optimization with RFM
 
-## Project Snapshot Card (15-second read)
+## Project Snapshot Card
 
 - **Problem**: Lifecycle marketing often under-serves high-value customers, reacts too late to churn-risk users, and overspends on low-probability cohorts.
 - **Method**: `data/raw/rfm_stock_data.csv` -> RFM features -> rule-based lifecycle labels + KMeans/DBSCAN diagnostics -> decision policy layer.
 - **Key Result**: 4,338 customers segmented; `k=3` operational baseline; `High Value` contributes 79.48% estimated LTV share; policy outputs 2 P1 / 3 P2 / 3 P3 priorities.
 - **Business Value**: Converts segmentation into campaign actions (retain/reactivate/grow/deprioritize) for faster and clearer budget allocation.
 
-**DS/DA delivery artifacts (front-loaded):**
+**DS/DA delivery artifacts:**
 - SQL for customer-level aggregation and reproducible segment snapshots: `sql/rfm_segment_snapshot.sql`
 - Dashboard specification for stakeholder delivery (KPI/pages/ownership): `docs/dashboard_spec.md`
 
-**Quick visual (value concentration):**
+**Quick visual:**
 ![Top customer concentration](docs/assets/top_customer_concentration.png)
 
 ## Executive Summary
