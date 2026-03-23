@@ -99,23 +99,11 @@ Generated artifacts (generated on run via `python scripts/run_rfm_segmentation.p
 - `P1 - Protect` segments account for **87.06%** of estimated LTV and include **2,431** customers.
 - `At Risk - High Value` customers represent **4.24%** of total estimated LTV; a **5-10%** recovery rate in this segment implies an estimated **0.21-0.42%** total value lift.
 
-These values are deterministic outputs from the current artifact set and serve as decision support baselines.
-
 ## Decision System (Input -> Output)
 
-Inputs:
-
-- rule-based segment (`rule_label`)
-- estimated value signal (`estimated_ltv`, `estimated_ltv_share`)
-- policy priority tier (`priority_tier`)
-
-Outputs:
-
-- recommended business action (`recommended_action`)
-- execution priority (`P1/P2/P3`)
-- channel strategy (`channel`)
-
-Illustrative decision table from current policy:
+- Inputs: `rule_label`, `estimated_ltv`, `estimated_ltv_share`, `priority_tier`
+- Outputs: `recommended_action`, `P1/P2/P3` execution priority, and `channel`
+- Decision table snapshot:
 
 | Segment | LTV signal | Action | Priority | Expected ROI proxy |
 | --- | --- | --- | --- | --- |
@@ -126,12 +114,9 @@ Illustrative decision table from current policy:
 
 ## Business Recommendations
 
-Recommended baseline actions from current segmentation:
-
-- Protect `High Value` and `Loyal` cohorts with loyalty offers and service quality controls.
-- Run targeted reactivation campaigns for `At Risk - High Value` customers.
-- Build onboarding and second-purchase journeys for `New/Low Activity`.
-- Reduce paid-channel pressure for persistently low-value dormant users.
+- Protect value-dense cohorts (`High Value`, `Loyal`) with retention and service-quality safeguards.
+- Run controlled reactivation for `At Risk - High Value`, and onboarding/second-order flows for `New/Low Activity`.
+- Keep dormant low-value cohorts on low-cost automation and reduce paid-channel pressure.
 
 ## Assumptions and Limitations
 
