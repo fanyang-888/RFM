@@ -20,14 +20,7 @@ This repository turns transaction logs into decision-ready customer priorities, 
 
 ## Business Problem
 
-Lifecycle marketing teams often run broad campaigns with weak prioritization.  
-This causes three recurring losses:
-
-- under-investment in high-value customers,
-- delayed intervention for at-risk customers,
-- wasteful spend on low-probability segments.
-
-The objective of this repository is to provide a practical, transparent segmentation foundation that can be operationalized by CRM and Growth teams.
+Lifecycle marketing teams often run broad campaigns with weak prioritization, which leads to under-investment in high-value customers, delayed intervention for churn-risk users, and wasteful spend on low-probability cohorts.
 
 ## Decision Framework
 
@@ -92,7 +85,7 @@ Generated artifacts:
 
 - SQL snapshot query for DA handoff: `sql/rfm_segment_snapshot.sql`
 - Dashboard implementation spec (KPI/pages/ownership): `docs/dashboard_spec.md`
-- These artifacts are intentionally front-loaded above so DS/DA reviewers can spot delivery-readiness within the first screen.
+- These delivery artifacts are intentionally front-loaded above for quick DS/DA review.
 
 ## Impact (Estimated/Simulated)
 
